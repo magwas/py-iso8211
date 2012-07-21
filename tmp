@@ -1,0 +1,143 @@
+	def do_TITLE(self,rest):
+		if not self.in_intro:
+			raise dfd_parse_error,"TITLE only allowed before LEADER"
+
+		if self.debug:
+			self._debug_info(action,rest)
+
+	def do_AUTHOR(self,rest):
+		if not self.in_intro:
+			raise dfd_parse_error,"AUTHOR only allowed before LEADER"
+
+		if self.debug:
+			self._debug_info(action,rest)
+
+	def do_DATE(self,rest):
+		if not self.in_intro:
+			raise dfd_parse_error,"DATE only allowed before LEADER"
+
+		if self.debug:
+			self._debug_info(action,rest)
+
+	def do_INCLUDE(self,rest):
+		if self.debug:
+			self._debug_info(action,rest)
+
+		raise dfd_parse_error,"INCLUDE not yet implemented"
+
+	def do_LEADER(self,rest):
+
+		self.in_intro = FALSE
+
+		if self.debug:
+			self._debug_info(action,rest)
+
+		self._read_leader()
+
+		self.in_intro   = FALSE
+		self.had_leader = TRUE
+
+	def do_DEFAULT(self,rest):
+
+		if not self.had_leader:
+			raise dfd_parse_error,"LEADER is required before DEFAULT"
+
+		if self.debug:
+			self._debug_info(action,rest)
+
+	def do_FIELD(self,rest):
+
+		if not self.had_leader:
+			raise dfd_parse_error,"LEADER is required before first FIELD"
+
+		if self.debug:
+			self._debug_info(action,rest)
+
+		self._read_field(rest)
+
+	def do_LOCAL(self,rest):
+		if self.debug:
+			self._debug_info(action,rest)
+
+
+
+	def do_END_LEADER(self,rest):
+		if self.debug:
+			self._debug_info("END LEADER",words[2:])
+
+		self.had_leader = TRUE
+
+		return
+
+	def do_TAG_LENGTH(self,rest):
+		if self.debug:
+			self._debug_info("TAG LENGTH",words[2:])
+
+	def do_LEVEL(self,rest):
+		if self.debug:
+			self._debug_info("LEVEL",words[1:])
+
+	def do_VERSION(self,rest):
+		if self.debug:
+			self._debug_info("VERSION",words[1:])
+
+	def do_FORM(self,rest):
+		if self.debug:
+			self._debug_info("FORM",words[1:])
+
+	def do_INLINE_EXTENSION_CODE(self,rest):
+		if self.debug:
+			self._debug_info("INLINE EXTENSION CODE",words[3:])
+
+	def do_APPLICATION_INDICATOR(self,rest):
+		if self.debug:
+			self._debug_info("APPLICATION INDICATOR",words[2:])
+
+	def do_leader_ESCAPE(self,rest):
+		if self.debug:
+			self._debug_info("ESCAPE",words[1:])
+
+
+
+
+
+	def do_field_PARENT(self,rest):
+		if self.debug:
+			self._debug_info("PARENT",words[1:])
+
+	def do_PRINTABLE_GRAPHICS(self,rest):
+		if self.debug:
+			self._debug_info("PRINTABLE GRAPHICS",words[2:])
+
+	def do_field_ESCAPE(self,rest):
+		if self.debug:
+			self._debug_info("ESCAPE",words[1:])
+
+	def do_STRUCTURE_CODE(self,rest):
+		if self.debug:
+			self._debug_info("STRUCTURE CODE",words[2:])
+
+	def do_NUMERIC_DESCRIPTOR(self,rest):
+		if self.debug:
+			self._debug_info("NUMERIC DESCRIPTOR",words[2:])
+
+	def do_FOR(self,rest):
+		if self.debug:
+			self._debug_info("FOR",words[1:])
+
+	def do_BY(self,rest):
+		if self.debug:
+			self._debug_info("BY",words[1:])
+
+	def do_REPEAT(self,rest):
+		if self.debug:
+			self._debug_info("REPEAT",words[1:])
+
+	def do_END_REPEAT(self,rest):
+		if self.debug:
+			self._debug_info("END REPEAT",words[2:])
+
+	def do_THEN(self,rest):
+		if self.debug:
+			self._debug_info("THEN",words[1:])
+
