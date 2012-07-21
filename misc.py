@@ -953,7 +953,7 @@ def _unsigned_int(msof,data):
 	size   = len(data)
 	result = 0
 
-	if msof:
+	if sys.byteorder=='little' and not msof:
 		for count in range(size):		# eg: 0, 1, 2, 3 for size = 4
 			result = (result << 8) + ord(data[count])
 	else:
