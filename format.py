@@ -763,7 +763,6 @@ class FormatParser:
 		# The current character should be the main one...
 
 		octet = self.octets[self.next]
-
 		self.next = self.next + 1
 
 		if octet == "A" or octet == "I" or octet == "R" or octet == "S" or \
@@ -783,7 +782,6 @@ class FormatParser:
 			# at what follows it
 
 			control = octet
-
 			if self.octets[self.next] in string.digits:
 				# It is the MSOF binary form - read its type and size
 
@@ -798,6 +796,9 @@ class FormatParser:
 				# It is bit string data - treat it normally
 
 				which,size = self._read_subfield_size(octet)
+				if size == None:
+					size = 0
+					#raise NotImplementedError("size is None",octet,control,which)
 
 
 		elif octet == "b":

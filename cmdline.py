@@ -68,7 +68,8 @@ TRUE  = 1
 
 # Exceptions
 
-UnknownCommand = "Unknown command"
+class UnknownCommand(BaseException):
+	pass
 
 # The basic help string
 
@@ -270,22 +271,22 @@ class CommandLine:
 				else:
 					break
 
-			except self.exceptions_to_ignore:
-				# Any exception that we should just ignore
-				# - just ignore this command line after reporting
-
-				print "%s: %s"%(sys.exc_type,sys.exc_value)
-				break
-
-			except self.exceptions_to_handle:
-				# Any exception that we should handle specially
-				# - just ignore this command line afterwards
-
-				if self.handler == None:
-					print "%s: %s"%(sys.exc_type,sys.exc_value)
-				else:
-					self.handler(sys.exc_type,sys.exc_value)
-				break
+#			except self.exceptions_to_ignore:
+#				# Any exception that we should just ignore
+#				# - just ignore this command line after reporting
+#
+#				print "%s: %s"%(sys.exc_type,sys.exc_value)
+#				break
+#
+#			except self.exceptions_to_handle:
+#				# Any exception that we should handle specially
+#				# - just ignore this command line afterwards
+#
+#				if self.handler == None:
+#					print "%s: %s"%(sys.exc_type,sys.exc_value)
+#				else:
+#					self.handler(sys.exc_type,sys.exc_value)
+#				break
 
 
 
@@ -371,7 +372,7 @@ class CommandLine:
 
 		# And raise an exception to show something went wrong
 
-		raise UnknownCommand,(cmd,args)
+		raise UnknownCommand(cmd,args)
 
 
 	def interactive(self,cmd,args):

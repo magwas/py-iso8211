@@ -54,22 +54,54 @@ debugging = 0
 # Exceptions
 # ==========
 
-iso8211_error		= "ISO 8211 error"
-iso8211_version_error	= "ISO 8211 unknown version"
-iso8211_mode_error	= "ISO 8211 file mode error"
-iso8211_file_error	= "ISO 8211 file error"
-iso8211_dir_error	= "ISO 8211 directory error"
-iso8211_index_error	= "ISO 8211 index error"
-iso8211_array_error	= "ISO 8211 fixed array error"
-iso8211_syntax_error	= "ISO 8211 syntax error"
-iso8211_unsupported	= "ISO 8211 unsupported feature"
-iso8211_format_error	= "ISO 8211 format error"
-iso8211_internal_error	= "ISO 8211 internal error"
-iso8211_unexpected	= "ISO 8211 unexpected value"
-iso8211_concat_error	= "ISO 8211 Cartesian label error"
-iso8211_fcfmt_error	= "ISO 8211 format/field controls error"
-iso8211_noarray_error	= "ISO 8211 no array descriptor"
-iso8211_noformat_error	= "ISO 8211 no format controls"
+class iso8211_error	(BaseException):
+	#"ISO 8211 error"
+	pass
+class iso8211_version_error(BaseException):
+	#"ISO 8211 unknown version"
+	pass
+class iso8211_mode_error(BaseException):
+	#"ISO 8211 file mode error"
+	pass
+class iso8211_file_error(BaseException):
+	#"ISO 8211 file error"
+	pass
+class iso8211_dir_error(BaseException):
+	#"ISO 8211 directory error"
+	pass
+class iso8211_index_error(BaseException):
+	#"ISO 8211 index error"
+	pass
+class iso8211_array_error(BaseException):
+	#"ISO 8211 fixed array error"
+	pass
+class iso8211_syntax_error(BaseException):
+	#"ISO 8211 syntax error"
+	pass
+class iso8211_unsupported(BaseException):
+	#"ISO 8211 unsupported feature"
+	pass
+class iso8211_format_error(BaseException):
+	#"ISO 8211 format error"
+	pass
+class iso8211_internal_error(BaseException):
+	#"ISO 8211 internal error"
+	pass
+class iso8211_unexpected(BaseException):
+	#"ISO 8211 unexpected value"
+	pass
+class iso8211_concat_error(BaseException):
+	#"ISO 8211 Cartesian label error"
+	pass
+class iso8211_fcfmt_error(BaseException):
+	#"ISO 8211 format/field controls error"
+	pass
+class iso8211_noarray_error(BaseException):
+	#"ISO 8211 no array descriptor"
+	pass
+class iso8211_noformat_error(BaseException):
+	#"ISO 8211 no format controls"
+	pass
 
 # A tuple of all of the exceptions...
 

@@ -174,12 +174,12 @@ class DDF:
 		# Check we don't already have a file open
 
 		if self.file != None or self.name != None:
-			raise iso8211_file_error,"File %s is already open"%self.name
+			raise iso8211_file_error("File %s is already open"%self.name)
 
 		# Check we recognised the opening mode
 
 		if mode != "r":
-			raise iso8211_mode_error,mode
+			raise iso8211_mode_error(mode)
 
 		# OK - we're safe - try to open the file
 		# (use `binary' mode for safety - this doesn't do anything on
@@ -234,7 +234,7 @@ class DDF:
 		# How about creating an array of record offsets on the fly?
 
 		if self.file == None:
-			raise iso8211_file_error,"There is no file open"
+			raise iso8211_file_error("There is no file open")
 
 		self.current_record = Record(self,self.next_posn,self.next_index)
 		self.next_posn      = self.next_posn  + self.current_record.length
@@ -259,10 +259,10 @@ class DDF:
 		"""
 
 		if self.file == None:
-			raise iso8211_file_error,"There is no file open"
+			raise iso8211_file_error("There is no file open")
 
 		if which < 0:
-			raise iso8211_index_error,which,"record indices must be 0 or more"
+			raise iso8211_index_error(which,"record indices must be 0 or more")
 		elif which == self.current_record.index:
 			return self.current_record		# we already have it in hand
 		elif which < self.current_record.index:
@@ -624,7 +624,7 @@ class Leader:
 		self.octets = file.read(24)
 
 		if self.octets[0] == CIRCUMFLEX:
-			raise EOFError,"Circumflex detected at end of file"
+			raise EOFError("Circumflex detected at end of file")
 
 		# Extract the things that we get in all DRs
 
@@ -703,7 +703,7 @@ class Leader:
 		elif self.version_number == ISO8211_V1:
 			self.version_number = 1
 		else:
-			raise iso8211_version_error,self.version_number
+			raise iso8211_version_error(self.version_number)
 
 
 	def chars(self,rp,len):
@@ -853,7 +853,7 @@ class Directory:
 		self._octets = file.read(directory_length)
 
 		if self._octets == "":
-			raise EOFError,"Trying to read directory in record %s"%record.index
+			raise EOFError("Trying to read directory in record %s"%record.index)
 
 		#++++++++++++++++++++
 		#print "record length:    ",record.length
@@ -876,13 +876,13 @@ class Directory:
 
 		if (directory_length % self.entry_size) != 1:
 			remainder = directory_length%self.entry_size
-			raise iso8211_dir_error,(EXC_DIR_SIZE,
+			raise iso8211_dir_error(EXC_DIR_SIZE,
 						 self.entry_size,
 						 directory_length,
 						 self._octets[-remainder])
 
 		if self._octets[-1] != FT:
-			raise iso8211_dir_error,(EXC_DIR_NOTFT,self._octets[-1])
+			raise iso8211_dir_error(EXC_DIR_NOTFT,self._octets[-1])
 
 		self.num_entries = (directory_length-1) / self.entry_size
 
@@ -940,10 +940,10 @@ class Directory:
 		"""Return a specific directory entry (as a string), by index."""
 
 		if index < 0:
-			raise iso8211_index_error,(index,"field indices must be 0 or more")
+			raise iso8211_index_error(index,"field indices must be 0 or more")
 
 		if index >= self.num_entries:
-			raise iso8211_index_error,(index,
+			raise iso8211_index_error(index,
 						   "there are only "+`self.num_entries`+
 						   " in the directory")
 
@@ -1049,7 +1049,7 @@ class Field_area:
 			self._octets = file.read(self.length)
 
 			if self._octets == "":
-				raise EOFError,"Trying to read field area in record %s"%record.index
+				raise EOFError("Trying to read field area in record %s"%record.index)
 
 
 	def __del__(self):
@@ -1113,15 +1113,15 @@ class Field:
 
 	def __init__(self,directory,index,reading=TRUE):
 		if index < 0:
-			raise iso8211_index_error,(index,"field index must be 0 or more")
+			raise iso8211_index_error(index,"field index must be 0 or more")
 
 		if directory.record.index == 0 and index >= directory.num_entries:
-			raise iso8211_index_error,(index,
+			raise iso8211_index_error(index,
 						   "there are only "+`directory.num_entries`+
 						   " in the directory")
 
 		if directory.record.index > 0 and index >= directory.num_fields:
-			raise iso8211_index_error,(index,
+			raise iso8211_index_error(index,
 						   "there are only "+`directory.num_fields`+
 						   " in the directory")
 
@@ -1177,7 +1177,7 @@ class Field:
 		# (Can self.length be zero? - NO, because we need a terminating FT...)
 
 		if self.data[-1] != FT:
-			raise iso8211_error,\
+			raise iso8211_error\
 			      ("Data for field %s (%s) in record %s does not end with FT\n" \
 			       "Data is `%s'"%(self.index,self.tag,self.record.index,self.data))
 
@@ -1265,10 +1265,10 @@ class Field:
 		# So all one can really do is raise an exception, I guess.
 
 		if field_desc.format_controls == None or field_desc.array_descriptor == None:
-			raise iso8211_error, \
+			raise iso8211_error (
 			      "Unable to split data - no format controls or labels\n" \
 			      "Reading data for field %s (%s) in record %s\n"% \
-			      (self.index,self.tag,self.record.index)
+			      (self.index,self.tag,self.record.index))
 
 
 		# Lose the final FT from our data

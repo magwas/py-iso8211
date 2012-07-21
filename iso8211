@@ -60,7 +60,9 @@ TRUE  = 1
 
 # Exceptions
 
-CommandFailure = "Command failed"
+class CommandFailure(BaseException):
+	#"Command failed"
+	pass
 
 
 
@@ -143,11 +145,11 @@ class Cmd(CommandLine):
 
 		# Get the list of DDFs in the current directory
 
-		try:
-			ddfs  = iso8211.list(self.current_directory)
-		except:
-			print "%s: %s"%(sys.exc_type,sys.exc_value)
-			return
+#		try:
+		ddfs  = iso8211.list(self.current_directory)
+#		except:
+#			print "%s: %s"%(sys.exc_type,sys.exc_value)
+#			return
 
 		# If there are none, give up
 
@@ -205,7 +207,7 @@ class Cmd(CommandLine):
 		"""Change the `current' directory."""
 
 		if len(args) < 1:
-			raise CommandFailure,"`cd' needs a directory name"
+			raise CommandFailure("`cd' needs a directory name")
 
 		# Work out the directory requested
 
@@ -229,11 +231,11 @@ class Cmd(CommandLine):
 			request   = os.path.join(self.current_directory,args[0])
 			directory = expand_path(request)
 
-		try:
-			ddfs  = iso8211.list(directory)
-		except:
-			print "%s: %s"%(sys.exc_type,sys.exc_value)
-			return
+#		try:
+		ddfs  = iso8211.list(directory)
+#		except:
+#			print "%s: %s"%(sys.exc_type,sys.exc_value)
+#			return
 
 		print "DDF files in directory ",directory
 		if len(ddfs) == 0:
@@ -259,11 +261,11 @@ class Cmd(CommandLine):
 			request   = os.path.join(self.current_directory,args[0])
 			directory = expand_path(request)
 
-		try:
-			files = os.listdir(directory)
-		except:
-			print "%s: %s"%(sys.exc_type,sys.exc_value)
-			return
+#		try:
+		files = os.listdir(directory)
+#		except:
+#			print "%s: %s"%(sys.exc_type,sys.exc_value)
+#			return
 
 		print "Files in directory ",directory
 		if len(files) == 0:
@@ -286,7 +288,7 @@ class Cmd(CommandLine):
 		"""Open a DDF for read."""
 
 		if len(args) < 1:
-			raise CommandFailure,"`file' needs a DDF name"
+			raise CommandFailure("`file' needs a DDF name")
 
 		file = os.path.join(self.current_directory,args[0])
 		file = expand_path(file)
@@ -295,10 +297,10 @@ class Cmd(CommandLine):
 			self.close(None,None)
 
 		print "Opening DDF",file
-		try:
-			self.ddf.open(file,"r")
-		except:
-			print "%s: %s"%(sys.exc_type,sys.exc_value)
+#		try:
+		self.ddf.open(file,"r")
+#		except:
+#			print "%s: %s"%(sys.exc_type,sys.exc_value)
 
 
 	def close(self,cmd,args):
@@ -312,10 +314,10 @@ class Cmd(CommandLine):
 		"""Write something out."""
 
 		if len(args) < 1:
-			raise CommandFailure,"`write' what? (dfd [<name>])"
+			raise CommandFailure("`write' what? (dfd [<name>])")
 
 		if self.ddf == None:
-			raise CommandFailure,"No DDF given yet - use the `file' command"
+			raise CommandFailure("No DDF given yet - use the `file' command")
 		else:
 			if args[0] == "DFD" or args[0] == "dfd":
 
@@ -341,12 +343,12 @@ class Cmd(CommandLine):
 		"""Read something."""
 
 		if len(args) < 1:
-			raise CommandFailure,"`read' what? (dfd <name>)"
+			raise CommandFailure("`read' what? (dfd <name>)")
 
 		if args[0] == "DFD" or args[0] == "dfd":
 
 			if len(args) < 2:
-				raise CommandFailure,"No DFD name given"
+				raise CommandFailure("No DFD name given")
 			else:
 				name = args[1]
 
@@ -408,18 +410,18 @@ class Cmd(CommandLine):
 		print args
 
 		if len(args) < 1:
-			raise CommandFailure,"show which field? (eg, show field 0001)"
+			raise CommandFailure("show which field? (eg, show field 0001)")
 		else:
 			tag = args[0]
 
 		if len(args) > 1:
 			if args[1] != "in" or args[2] != "record":
-				raise CommandFailure,"command is: show field <tag> in record <index>"
+				raise CommandFailure("command is: show field <tag> in record <index>")
 
 			try:
 				which = string.atoi(args[3])
 			except:
-				raise CommandFailure,"command is: show field <tag> in record <index>"
+				raise CommandFailure("command is: show field <tag> in record <index>")
 
 			self.show_field_in_record(tag,which)
 		else:
@@ -430,8 +432,8 @@ class Cmd(CommandLine):
 		"""Do the "show record" command."""
 
 		if len(args) < 1:
-			raise CommandFailure,\
-			      "show which record? (eg, show record 3 or show record at 123)"
+			raise CommandFailure(
+			      "show which record? (eg, show record 3 or show record at 123)")
 
 		if args[0] == "at":
 			self.show_record_at(args[1:])
@@ -446,7 +448,7 @@ class Cmd(CommandLine):
 		"""Do the "show [record] at" command."""
 
 		if len(args) < 1:
-			raise CommandFailure,"show which record? (eg, show at 123)"
+			raise CommandFailure("show which record? (eg, show at 123)")
 
 		where = string.atoi(args[0])
 			
@@ -458,10 +460,10 @@ class Cmd(CommandLine):
 		"""Show information about a DDF."""
 
 		if len(args) < 1:
-			raise CommandFailure,"`show' what? (all, DDR, data, record <n>, at <offset>)"
+			raise CommandFailure("`show' what? (all, DDR, data, record <n>, at <offset>)")
 
 		if self.ddf == None:
-			raise CommandFailure,"No DDF given yet - use the `file' command"
+			raise CommandFailure("No DDF given yet - use the `file' command")
 		else:
 			if args[0] == "all":
 
