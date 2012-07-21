@@ -864,14 +864,14 @@ def parse_binary_item(datatype,item):
 	print_value = binary_printable(item)
 
 	# And have a go at translating the bits...
-
+	
 	if type == "1":		# Integer, unsigned
 
 		value = "U:0x%s (%d)"%(print_value,_unsigned_int(msof,item))
 
 	elif type == "2":	# Integer, signed
 
-		value = "I:0x%s (%d)"%(print_value,_unsigned_int(msof,item))
+		value = "I:0x%s (%d)"%(print_value,_signed_int(msof,item,len(item)))
 
 	elif type == "3":	# Real, fixed point
 
@@ -909,7 +909,7 @@ def parse_binary_item(datatype,item):
 	return value
 
 
-def _signed_int(msof,data):
+def _signed_int(msof,data,size):
 	"""Interpret the octets of DATA as a signed integer in MSOF/LSOF order.
 
 	If MSOF is TRUE, we have most significant octet first, otherwise
@@ -925,15 +925,14 @@ def _signed_int(msof,data):
 
 	negative = FALSE
 
-	if msof:
-		if (data[size-1] & 0x80):
+	if (sys.byteorder=='little' and not msof) or msof:
+		if (ord(data[0]) & 0x80):
+			negative = TRUE	
+	else: #untested
+		if (ord(data[size-1]) & 0x80):
 			negative = TRUE		# is that right?
-	else:
-		if (data[0] & 0x80):
-			negative = TRUE		# is that right?
-
 	if negative:
-		result = ~result		# is that right?
+		result = result- 2**(8*size)
 
 	return result
 
